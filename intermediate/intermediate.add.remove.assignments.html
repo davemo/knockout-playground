@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>knockout.js | intermediate add remove assignments</title>
+  <script type="text/javascript" src="../lib/jquery.1.5.2.js"></script>
+  <script type="text/javascript" src="../lib/jquery.tmpl.js"></script>
+  <script type="text/javascript" src="../lib/knockout-1.2.0.debug.js"></script>
+  
+  
+  <style type="text/css">  
+    table {
+      border: 1px solid black;
+      margin: 10px;
+      width: 350px;
+    }
+    
+    th {
+      border-bottom: 1px solid gray;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  
+  <table id="add-interface">
+    <thead>
+      <tr>
+        <th colspan="4">Add Assignments</th>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <th>Customer ID</th>
+        <th>Name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <form data-bind="submit: addAssignment">
+          <td>
+            <select name="selectedCustomerType" data-bind='value: newType'>
+              <option value="pmg">PMG</option>
+              <option value="family">Family</option>
+              <option value="unit">Unit</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" class="required number" data-bind='value: newId' />
+          </td>
+          <td>
+            <input type="text" data-bind='value: newLabel' />
+          </td>
+          <td>
+            <input type="submit" value="Add" />
+          </td>
+        </form>
+      </tr>
+    </tbody>
+  </table>
+  
+  <table id="assignments">
+    <thead>
+      <tr>
+        <th colspan="4">List Assignments</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody data-bind='template: { name: "assignment-template", foreach: assignments }'></tbody>
+  </table> 
+  
+  <script id="assignment-template" type="text/html">
+      <tr>
+        <td>${ type }</td>
+        <td>${ id }</td>
+        <td>${ label }</td>
+        <td><input type="button" value="Delete" data-bind='click: function() { viewModel.removeAssignment(this); }' /></td>
+      </tr>
+  </script>
+  
+  <script type="text/javascript">
+    var Assignment = function(type, id, label) {
+      this.type = new ko.observable(type);
+      this.id = new ko.observable(id);
+      this.label = new ko.observable(label);
+    };
+    
+    var viewModel = {
+      assignments: new ko.observableArray([
+        { type: "family", id: 19395, label: "initial"}
+      ]),
+      newType: ko.observable(""),
+      newId: ko.observable(""),
+      newLabel: ko.observable("")
+    };
+    
+    viewModel.addAssignment = function() {
+      if(this.newId() !== undefined) {
+         this.assignments.push(new Assignment(this.newType(), this.newId(), this.newLabel()));
+         this.newType("pmg");
+         this.newId("");
+         this.newLabel("");
+      }
+    };
+    
+    viewModel.removeAssignment = function(assignment) {
+      this.assignments.remove(assignment);
+    };
+    
+    ko.applyBindings(viewModel);
+    
+  </script>
+  
+</body>
+</html>

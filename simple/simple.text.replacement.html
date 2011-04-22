@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>knockout.js | simple text replacement</title>
+  <script type="text/javascript" src="../lib/jquery.1.5.2.js"></script>
+  <script type="text/javascript" src="../lib/jquery.tmpl.js"></script>
+  <script type="text/javascript" src="../lib/knockout-1.2.0.debug.js"></script>
+</head>
+<body>
+  <h1>This h1 has some text that was dynamically inserted by <span data-bind="text: title"></span></h1>
+  
+  <script type="text/javascript">
+      var viewModel = {
+          title: ko.observable("Knockout.JS")
+      };
+      
+      ko.applyBindings(viewModel);
+  </script>
+</body>
+</html>

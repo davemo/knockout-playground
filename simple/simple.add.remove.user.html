@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>knockout.js | simple add remove user to a list</title>
+  <script type="text/javascript" src="../lib/jquery.1.5.2.js"></script>
+  <script type="text/javascript" src="../lib/jquery.tmpl.js"></script>
+  <script type="text/javascript" src="../lib/knockout-1.2.0.debug.js"></script>
+</head>
+<body>
+
+  <input type="text" data-bind="value: name" />
+  <input type="button" value="Add User" data-bind="click: addUser" />
+  
+  <ul id="users" data-bind='template: { name: "user-template", foreach: users }'></ul>
+  
+  <script id="user-template" type="text/x-jquery-tmpl">
+    <li>${ name } <input type="button" value="delete" data-bind='click: function() { viewModel.removeUser(this); }' /></li>
+  </script>
+  
+  <script type="text/javascript">
+      var viewModel = {
+          name: ko.observable(),
+          users: ko.observableArray([{ name: "dave"}, { name: "jitendra"}]),
+          addUser: function() {
+            this.users.push({ name: this.name()});
+            this.name("");
+          },
+          removeUser: function(user) {
+            this.users.remove(user);
+          }
+      };
+      
+      ko.applyBindings(viewModel);
+  </script>
+</body>
+</html>
